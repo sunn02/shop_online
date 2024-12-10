@@ -2,12 +2,14 @@ const jwt = require("jsonwebtoken");
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const bcrypt = require('bcrypt');
-const { generateCSRFToken } = require('../helpers/csrfHandler');
+const { connectDB } = require("../../config/config");
 const window = new JSDOM('').window;
 const purify = DOMPurify(window);
 
-exports.SignUp = async(req, res) => {
+const db = await connectDB();
+const usersCollection = db.collection("users");
 
+exports.SignUp = async(req, res) => {
     try{
         const email = purify.sanitize(req.body.email);
         const password = purify.sanitize(req.body.password);
@@ -20,7 +22,7 @@ exports.SignUp = async(req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await db.users.insertOne({
+        const newUser = await usersCollection.insertOne({
             data: {
                 email: email,
                 password: hashedPassword,
@@ -30,7 +32,7 @@ exports.SignUp = async(req, res) => {
 
         return res.status(201).json({
             message: "User created successfully",
-            user: { email: newUser.email } 
+            user: { email: email } 
         }); 
     }
     catch (error){
@@ -49,7 +51,7 @@ exports.SignIn = async(req, res) => {
     }
 
     try {
-        const user = await prisma.user.findUnique({ where: {email}})
+        const user = await usersCollection.findOne({ _id: req.user.sub })
 
         if (user) {  
             const isPasswordValid = await bcrypt.compare(password, user.password); 
@@ -60,12 +62,9 @@ exports.SignIn = async(req, res) => {
                         expiresIn: "7d", }
                     );
 
-                    generateCSRFToken(req, res);
-
                 return res.status(200).json({
                     message: "Authentication successful",
-                    token: token,
-                    user: req.session.user
+                    token: token
                 }); 
             } else {
                 return res.status(401).json({ message: "Invalid password" });
@@ -93,32 +92,27 @@ exports.LogOut = async(req, res) => {
     // });
 }
 
-exports.Authenticaded = async(req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    res.status(200).json({
-        message: "Welcome to your profile!",
-        user: req.session.user,
-    })
-}
+// exports.Authenticaded = async(req, res) => {
+//     if (!req.session.user) {
+//         return res.status(401).json({ message: 'Unauthorized' });
+//     }
+//     res.status(200).json({
+//         message: "Welcome to your profile!",
+//         user: req.session.user,
+//     })
+// }
 
 
-exports.GetAll = async(req, res) => {
+// exports.GetAll = async(req, res) => {
+//     try {
+//         if (req.user.role !== "Admin") {
+//             return res.status(401).json({ message: "Not Authorized!" });
+//         }
+//         const users = await prisma.user.findMany()
+//         res.status(200).json(users);
 
-    try {
-        if (!req.user) {
-            return res.status(401).json({ message: "Not authenticated!" });
-        }
-
-        if (req.user.role !== "Admin") {
-            return res.status(401).json({ message: "Not Authorized!" });
-        }
-        const users = await prisma.user.findMany()
-        res.status(200).json(users);
-
-    }catch(error){
-        console.error("Error fetching users:", error);
-        res.status(500).json({ message: "Error to get all users" });
-    }
-}
+//     }catch(error){
+//         console.error("Error fetching users:", error);
+//         res.status(500).json({ message: "Error to get all users" });
+//     }
+// }
