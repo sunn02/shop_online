@@ -1,4 +1,4 @@
-
+require('dotenv').config({ path: './backend/.env' });
 const jwt = require("jsonwebtoken");
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
@@ -48,20 +48,30 @@ exports.SignIn = async(req, res) => {
 
     try {
         const user = await Users.findOne({ email })
-
+        console.log(`User: ${user.email}`);
+        console.log(`Password entered: ${password}`);
+        console.log(`Password stored: ${user.password}`);
         if (user) {  
             const isPasswordValid = await bcrypt.compare(password, user.password); 
+            console.log(`Is password valid: ${isPasswordValid}`);
+            console.log(`User role: ${user.role}`);
+
             if (isPasswordValid){
-                if (user.role == 'Admin' ){
+                if (user.role == 'admin' ){
                     const token = jwt.sign(
                         { sub: user.id, role: user.role }, process.env.JWT_SECRET, {
                             expiresIn: "7d", }
-                        );
+                    );
                     return res.status(200).json({
                         message: "Authentication successful",
                         token: token
                     }); 
-                 }
+                }
+                else {
+                    return res.status(200).json({
+                        message: "Authentication successful"
+                    })
+                }
             } else {
                 return res.status(401).json({ message: "Invalid password" });
             }
@@ -76,17 +86,7 @@ exports.SignIn = async(req, res) => {
     }
 }
 
-// exports.LogOut = async(req, res) => {
-    // req.session.destroy((error) => {
-    //     if (error) {
-    //         console.error(error);
-    //             return res.status(500).json({ message: 'Error al cerrar sesión' });
-    //     } else {
-    //         res.clearCookie('connect.sid'); 
-    //         res.status(200).json({ message: 'Sesión cerrada correctamente' });
-    //     }
-    // });
-// }
+
 
 // exports.Authenticaded = async(req, res) => {
 //     if (!req.session.user) {
