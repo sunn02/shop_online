@@ -1,39 +1,35 @@
+
 const jwt = require("jsonwebtoken");
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
+const Users = require('../models/usersModel');
 const bcrypt = require('bcrypt');
-const { connectDB } = require("../../config/config");
 const window = new JSDOM('').window;
 const purify = DOMPurify(window);
-
-const db = await connectDB();
-const usersCollection = db.collection("users");
 
 exports.SignUp = async(req, res) => {
     try{
         const email = purify.sanitize(req.body.email);
         const password = purify.sanitize(req.body.password);
-        const role = purify.sanitize(req.body.role);
 
-        const validRoles = ['User', 'Admin'];
-        if (!validRoles.includes(role)) {
-            return res.status(400).json({ message: "Invalid role. Role must be 'User' or 'Admin'." });
+        const user = await Users.findOne({ email });
+        if (user){
+            return res.status(409).json({ error: "El usuario ya existe" });
         }
+        else {
+            const hashedPassword = await bcrypt.hash(password, 10);
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const newUser = await usersCollection.insertOne({
-            data: {
+            const newUser = await new Users({
                 email: email,
                 password: hashedPassword,
-                role: role,
-            }
-        });
+            });
+            await newUser.save();
 
-        return res.status(201).json({
-            message: "User created successfully",
-            user: { email: email } 
+            return res.status(201).json({
+                message: "User created successfully",
+                user: { email: email } 
         }); 
+        }
     }
     catch (error){
         console.error(error);
@@ -51,21 +47,21 @@ exports.SignIn = async(req, res) => {
     }
 
     try {
-        const user = await usersCollection.findOne({ _id: req.user.sub })
+        const user = await Users.findOne({ email })
 
         if (user) {  
             const isPasswordValid = await bcrypt.compare(password, user.password); 
             if (isPasswordValid){
-
-                const token = jwt.sign(
-                    { sub: user.id, role: user.role }, process.env.JWT_SECRET, {
-                        expiresIn: "7d", }
-                    );
-
-                return res.status(200).json({
-                    message: "Authentication successful",
-                    token: token
-                }); 
+                if (user.role == 'Admin' ){
+                    const token = jwt.sign(
+                        { sub: user.id, role: user.role }, process.env.JWT_SECRET, {
+                            expiresIn: "7d", }
+                        );
+                    return res.status(200).json({
+                        message: "Authentication successful",
+                        token: token
+                    }); 
+                 }
             } else {
                 return res.status(401).json({ message: "Invalid password" });
             }
@@ -80,7 +76,7 @@ exports.SignIn = async(req, res) => {
     }
 }
 
-exports.LogOut = async(req, res) => {
+// exports.LogOut = async(req, res) => {
     // req.session.destroy((error) => {
     //     if (error) {
     //         console.error(error);
@@ -90,7 +86,7 @@ exports.LogOut = async(req, res) => {
     //         res.status(200).json({ message: 'Sesión cerrada correctamente' });
     //     }
     // });
-}
+// }
 
 // exports.Authenticaded = async(req, res) => {
 //     if (!req.session.user) {
