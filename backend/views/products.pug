@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title Lista de Productos
+  body
+    h1 Lista de Productos
+
+    if products && products.length
+      table
+        thead
+          tr
+            th Nombre
+            th Precio
+            th Acciones
+        tbody
+          each product in products
+            tr
+              td= product.product_name
+              td= product.product_price
+    else
+      p No hay productos disponibles en este momento.
+
+    a(href="/add-product") Agregar Producto
+

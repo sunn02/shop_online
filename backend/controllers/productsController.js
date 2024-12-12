@@ -2,8 +2,9 @@ const Products = require('../models/productsModel');
 
 exports.getAllProducts = async(req, res) => {
     try {
-        const products = await Products.find()
-        res.status(200).json(products);
+        const products = await Products.find();
+        console.log('Productos obtenidos:', products);
+        res.render("products", { products });
     } catch (error) {
         console.error('Error al obtener los temas:', error);
         res.status(500).send('Error al obtener los temas');
@@ -23,7 +24,7 @@ exports.createProduct = async(req, res) => {
         product_price : product_price
         })
         await newProduct.save();
-        return res.status(201).json({ message: "Product created successfully" });
+        res.redirect('/admin/products');
 } catch (error) {
     console.error('Error al crear el producto:', error);
     res.status(500).send('Error al crear el producto');
@@ -43,6 +44,7 @@ exports.updateProduct = async(req, res) => {
         if (!updatedProduct) {
             return res.status(404).json({ error: 'Producto no encontrado' });
         }
+        res.redirect('/admin/products')
     }
     catch (error){
         console.error(error)
@@ -58,7 +60,7 @@ exports.deleteProduct = async(req, res) => {
         if (!deletedProduct) {
             return res.status(404).json({ error: 'Producto no encontrado' });
         }
-        res.status(200).json({ message: 'Producto eliminado exitosamente' });
+        res.redirect('/admin/products')
     } catch (error){
         console.error('Error al eliminar el producto:', error);
         res.status(500).send('Error al eliminar el producto');

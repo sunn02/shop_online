@@ -1,0 +1,12 @@
+db.products.insertMany([
+  { "product_name": "Laptop", "product_price": 999.99 },
+  { "product_name": "Smartphone", "product_price": 799.99 },
+  { "product_name": "Headphones", "product_price": 199.99 },
+  { "product_name": "Wireless Mouse", "product_price": 29.99 },
+  { "product_name": "Keyboard", "product_price": 49.99 },
+  { "product_name": "Smartwatch", "product_price": 149.99 },
+  { "product_name": "Tablet", "product_price": 349.99 },
+  { "product_name": "External Hard Drive", "product_price": 89.99 },
+  { "product_name": "Portable Speaker", "product_price": 59.99 },
+  { "product_name": "Gaming Mouse", "product_price": 69.99 }
+]);
