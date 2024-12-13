@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const Users = require('../models/usersModel');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const window = new JSDOM('').window;
 const purify = DOMPurify(window);
 
@@ -62,14 +62,10 @@ exports.SignIn = async(req, res) => {
                         { sub: user.id, role: user.role }, process.env.JWT_SECRET, {
                             expiresIn: "7d", }
                     );
-                    return res.render('products', {
-                        token: req.query.token,
-                        user: req.user
-                    });
-                    // return res.status(200).json({
-                    //     message: "Authentication successful",
-                    //     token: token
-                    // }); 
+                    return res.status(200).json({
+                        message: "Authentication successful",
+                        token: token
+                    }); 
                 }
                 else {
                     return res.status(200).json({

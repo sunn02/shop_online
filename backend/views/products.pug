@@ -1,24 +1,12 @@
 doctype html
-html
+html(lang="es")
   head
-    title Lista de Productos
+    title Productos
+    script(src="/product.js") 
   body
-    h1 Lista de Productos
+    div#loading-message(style="display: none;") Cargando... 
+    h1 Productos Disponibles  
+    ul#products-list 
 
-    if products && products.length
-      table
-        thead
-          tr
-            th Nombre
-            th Precio
-            th Acciones
-        tbody
-          each product in products
-            tr
-              td= product.product_name
-              td= product.product_price
-    else
-      p No hay productos disponibles en este momento.
 
-    a(href="/add-product") Agregar Producto
 
