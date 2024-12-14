@@ -1,17 +1,28 @@
-const Order = require('../models/ordersModel'); 
+const { MongoClient } = require('mongodb');
+const config = require('../config/config'); 
 
-exports.getOrders = async (req, res) => {
-  try {
-    const orders = await Order.find()
-      .populate('customer', 'name email') 
-      .populate('products.id', 'name price'); 
+// Controlador para listar todos los pedidos
+exports.listOrders = async (req, res) => {
+    try {
+        // Conectar a la base de datos usando la configuración definida en config/mongodb.js
+        const client = await MongoClient.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+        const db = client.db(config.DB_NAME); 
 
-    res.status(200).json({
-      message: 'Órdenes obtenidas exitosamente',
-      orders,
-    });
-  } catch (error) {
-    console.error('Error al obtener las órdenes:', error);
-    res.status(500).json({ message: 'Error al obtener las órdenes', error });
-  }
+        // Acceder a la colección de pedidos
+        const ordersCollection = db.collection('Order');
+        
+        // Obtener todos los pedidos de la colección
+        const orders = await ordersCollection.find().toArray();
+        
+        if (orders.length === 0) {
+            return res.status(404).json({ message: 'No hay pedidos' });
+        }
+
+        // Renderizar la vista 'admin/orders' con los pedidos obtenidos
+        return res.render('admin/orders', { orders: orders });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener los pedidos');
+    }
 };
+

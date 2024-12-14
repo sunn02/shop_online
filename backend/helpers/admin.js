@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const Users = require('../models/usersModel');
 
 const saltRounds = 10; 
-const email = 'admin@example.com';  
+const username = 'Paula';  
 const password = 'adminPassword123';  
 const role = 'admin';  
 
@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost:27017/shop_db', {
     useUnifiedTopology: true
 })
 .then(async () => {
-    const existingUser = await Users.findOne({ email });
+    const existingUser = await Users.findOne({ username });
     if (existingUser) {
         console.log('El usuario admin ya existe.');
         return;
@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost:27017/shop_db', {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const newUser = new Users({
-        email,
+        username,
         password: hashedPassword,
         role
     });

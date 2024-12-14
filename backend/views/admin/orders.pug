@@ -8,16 +8,13 @@ html(lang="es")
       thead
         tr
           th Cliente
-          th Correo Electrónico
           th Dirección
           th Productos
-          th Estado
           th Precio Total
       tbody
         each order in orders
           tr
             td= order.customer.name
-            td= order.customer.email
             td= order.address
             td
               ul

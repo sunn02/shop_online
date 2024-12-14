@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Pedido</title>
+</head>
+<body>
+    <h1>Formulario de Pedido</h1>
+    <form method="POST" action="/order/create">
+        <label for="username">Nombre:</label>
+        <input type="text" name="username" required><br>
+
+        <label for="address">Dirección:</label>
+        <input type="text" name="address" required><br>
+
+        <label for="product_id">Producto:</label>
+        <input type="hidden" name="product_id" value="{{.ProductID}}"><br>
+
+        <button type="submit">Crear Pedido</button>
+    </form>
+</body>
+</html>

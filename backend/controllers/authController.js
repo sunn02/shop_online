@@ -9,10 +9,10 @@ const purify = DOMPurify(window);
 
 exports.SignUp = async(req, res) => {
     try{
-        const email = purify.sanitize(req.body.email);
+        const username = purify.sanitize(req.body.username);
         const password = purify.sanitize(req.body.password);
 
-        const user = await Users.findOne({ email });
+        const user = await Users.findOne({ username });
         if (user){
             return res.status(409).json({ error: "El usuario ya existe" });
         }
@@ -20,14 +20,14 @@ exports.SignUp = async(req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const newUser = await new Users({
-                email: email,
+                username: username,
                 password: hashedPassword,
             });
             await newUser.save();
 
             return res.status(201).json({
                 message: "User created successfully",
-                user: { email: email } 
+                user: { username: username } 
         }); 
         }
     }
@@ -38,17 +38,17 @@ exports.SignUp = async(req, res) => {
 };
 
 exports.SignIn = async(req, res) => {
-    const email = purify.sanitize(req.body.email);
+    const username = purify.sanitize(req.body.username);
     const password = purify.sanitize(req.body.password);
+    console.log("Datos recibidos del cliente:", { username, password });
 
-
-    if (!email || !password) {
-        return res.status(400).json({ message: "Email and password are required" });
+    if (!username || !password) {
+        return res.status(400).json({ message: "username and password are required" });
     }
 
     try {
-        const user = await Users.findOne({ email })
-        console.log(`User: ${user.email}`);
+        const user = await Users.findOne({ username })
+        console.log(`User: ${user.username}`);
         console.log(`Password entered: ${password}`);
         console.log(`Password stored: ${user.password}`);
         if (user) {  
@@ -80,27 +80,3 @@ exports.SignIn = async(req, res) => {
 
 
 
-// exports.Authenticaded = async(req, res) => {
-//     if (!req.session.user) {
-//         return res.status(401).json({ message: 'Unauthorized' });
-//     }
-//     res.status(200).json({
-//         message: "Welcome to your profile!",
-//         user: req.session.user,
-//     })
-// }
-
-
-// exports.GetAll = async(req, res) => {
-//     try {
-//         if (req.user.role !== "Admin") {
-//             return res.status(401).json({ message: "Not Authorized!" });
-//         }
-//         const users = await prisma.user.findMany()
-//         res.status(200).json(users);
-
-//     }catch(error){
-//         console.error("Error fetching users:", error);
-//         res.status(500).json({ message: "Error to get all users" });
-//     }
-// }
