@@ -1,7 +1,6 @@
 const token = localStorage.getItem('token');
-
 if (token) {
-  fetch('/products', {
+  fetch('/admin/products', {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + token 
@@ -23,4 +22,3 @@ if (token) {
   console.log('No estás autenticado');
   window.location.href = '/login';  
 }
-

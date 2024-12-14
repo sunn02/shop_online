@@ -62,15 +62,7 @@ exports.SignIn = async(req, res) => {
                         { sub: user.id, role: user.role }, process.env.JWT_SECRET, {
                             expiresIn: "7d", }
                     );
-                    return res.status(200).json({
-                        message: "Authentication successful",
-                        token: token
-                    }); 
-                }
-                else {
-                    return res.status(200).json({
-                        message: "Authentication successful"
-                    })
+                    res.redirect(`/admin/products?token=${encodeURIComponent(token)}`);
                 }
             } else {
                 return res.status(401).json({ message: "Invalid password" });

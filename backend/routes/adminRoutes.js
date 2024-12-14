@@ -6,7 +6,7 @@ const productsController = require("../controllers/productsController");
 
 router.get("/products", verifyAdmin, productsController.getAllProducts);
 router.post("/products", verifyAdmin, productsController.createProduct);
-router.put("/products/:id", verifyAdmin, productsController.updateProduct);
+router.patch("/products/:id", verifyAdmin, productsController.updateProduct);
 router.delete("/products/:id", verifyAdmin, productsController.deleteProduct);
 
 
