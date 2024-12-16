@@ -1,13 +1,10 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
-
-// Order representa un pedido en la tienda
+// Order representa un pedido realizado por un cliente
 type Order struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	Username  string             `bson:"username"`
-	Address   string             `bson:"address"`
-	ProductID []string           `bson:"product_ids"`
+	Username  string   `json:"username"`
+	Address   string   `json:"address"`
+	ProductID []string `json:"product_ids"` // Asegúrate de que sea un slice de strings
 }
 
 

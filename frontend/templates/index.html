@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Tienda Online</title>
-</head>
-<body>
-    <h1>Productos Disponibles</h1>
-    <ul>
-        {{range .}}
-        <li>
-            <h2>{{.Name}}</h2>
-            <p>{{.Description}}</p>
-            <p>Precio: ${{.Price}}</p>
-            <a href="/order/new?product_id={{.ID}}">Hacer Pedido</a>
-        </li>
-        {{end}}
-    </ul>
-</body>
-</html>
+<h1>Lista de Productos</h1>
+<ul>
+    {{range .products}}
+        <li>{{.ProductName}} - ${{.ProductPrice}}</li>
+    {{else}}
+        <li>No hay productos disponibles.</li>
+    {{end}}
+</ul>
+

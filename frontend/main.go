@@ -1,17 +1,19 @@
 package main
 
 import (
-    "net/http"
-    "html/template"
+    "github.com/gin-gonic/gin"
+    "shop_online/frontend/config"     
     "shop_online/frontend/controllers" 
 )
 
 func main() {
-    http.HandleFunc("/", controllers.ShowProducts) 
-    http.HandleFunc("/order", controllers.ShowOrderForm) 
+    config.ConnectMongo()
+    r := gin.Default()
+    r.LoadHTMLGlob("templates/*")
+    r.GET("/products", controllers.ShowProducts)
+    r.POST("/order", controllers.CreateOrder)
 
-
-    err := http.ListenAndServe(":8080", nil)
+    err := r.Run(":8080")
     if err != nil {
         panic(err)
     }
