@@ -1,24 +1,19 @@
+doctype html
 html(lang="es")
   head
-    title Pedidos de Usuarios
+    title Lista de Pedidos
   body
-    h1 Pedidos de Usuarios
-
-    table
-      thead
+    h1 Lista de Pedidos
+    table(border="1")
+      tr
+        th Producto
+        th Cliente
+        th Dirección
+        th Total
+      each order in orders
         tr
-          th Cliente
-          th Dirección
-          th Productos
-          th Precio Total
-      tbody
-        each order in orders
-          tr
-            td= order.customer.name
-            td= order.address
-            td
-              ul
-                each product in order.products
-                  li #{product.id.name} - Cantidad: #{product.quantity}
-            td= order.status
-            td= "$" + order.total_price
+          td= order.product_name
+          td= order.costumer
+          td= order.address
+          td= order.total
+    a(href=`/admin/dashboard?token=${token}`)  Volver al Panel

@@ -2,15 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Pedido</title>
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" href="/static/index.css">
 </head>
 <body>
-    <h1>Formulario de Pedido</h1>
-
     <h2>Productos Disponibles</h2>
-    <div>
+    <div class="product-container">
         {{range .products}}
-        <div>
+        <div class="product-item">
             <h3>{{.ProductName}}</h3>
             <p>Precio: ${{.ProductPrice}}</p>
             

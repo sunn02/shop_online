@@ -4,7 +4,7 @@ const Users = require('../models/usersModel');
 
 const saltRounds = 10; 
 const username = 'Paula';  
-const password = 'adminPassword123';  
+const password = 'admin123';  
 const role = 'admin';  
 
 mongoose.connect('mongodb://localhost:27017/shop_db', {

@@ -5,6 +5,11 @@ const productsController = require("../controllers/productsController");
 const ordersController = require("../controllers/ordersController");
 
 
+router.get('/dashboard', verifyAdmin, (req, res) => {
+    const token = req.query.token; 
+    res.render('admin/dashboard', { token }); 
+});
+
 router.get("/products", verifyAdmin, productsController.getAllProducts);
 router.post("/products", verifyAdmin, productsController.createProduct);
 router.patch("/products/:id", verifyAdmin, productsController.updateProduct);
