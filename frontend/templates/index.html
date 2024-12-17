@@ -1,9 +1,28 @@
-<h1>Lista de Productos</h1>
-<ul>
-    {{range .products}}
-        <li>{{.ProductName}} - ${{.ProductPrice}}</li>
-    {{else}}
-        <li>No hay productos disponibles.</li>
-    {{end}}
-</ul>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Pedido</title>
+</head>
+<body>
+    <h1>Formulario de Pedido</h1>
+
+    <h2>Productos Disponibles</h2>
+    <div>
+        {{range .products}}
+        <div>
+            <h3>{{.ProductName}}</h3>
+            <p>Precio: ${{.ProductPrice}}</p>
+            
+            <!-- Botón para redirigir al formulario de pedido -->
+            <form method="GET" action="/order/create">
+                <input type="hidden" name="product_name" value="{{.ProductName}}">
+                <button type="submit">Pedir</button>
+            </form>
+        </div>
+        {{end}}
+    </div>
+</body>
+</html>
+
 

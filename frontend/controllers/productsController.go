@@ -7,16 +7,12 @@ import (
 	"time"
 
 	"shop_online/frontend/config"
+	"shop_online/frontend/models"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// Product representa un producto (estructurado con JSON tags)
-type Product struct {
-    ProductName  string  `json:"product_name" bson:"product_name"`  // Campo del producto
-    ProductPrice float64 `json:"product_price" bson:"product_price"` // Precio del producto
-}
 
 // ShowProducts obtiene los productos desde la colección de MongoDB
 func ShowProducts(c *gin.Context) {
@@ -36,7 +32,7 @@ func ShowProducts(c *gin.Context) {
 	defer cursor.Close(ctx)
 
 	// Decodificar los productos
-	var products []Product
+	var products []models.Product
 	if err := cursor.All(ctx, &products); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al decodificar productos"})
 		return

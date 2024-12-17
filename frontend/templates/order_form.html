@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Pedido</title>
+</head>
+<body>
+    <h1>Formulario de Pedido</h1>
+
+    <h2>Producto</h2>
+    <div>
+        <p><strong>Nombre:</strong> {{.product.ProductName}}</p>
+        <p><strong>Precio:</strong> ${{.product.ProductPrice}}</p>
+    </div>
+
+    <!-- Formulario para ingresar nombre, dirección y cantidad -->
+    <form method="POST" action="/order/create">
+        <input type="hidden" name="product_name" value="{{.product.ProductName}}">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+    
+        <label for="address">Dirección:</label>
+        <input type="text" name="address" required><br>
+    
+        <label for="quantity">Cantidad:</label>
+        <input type="number" name="quantity" value="1" min="1" required><br>
+    
+        <button type="submit">Pedir</button>
+    </form>
+    
+</body>
+</html>
