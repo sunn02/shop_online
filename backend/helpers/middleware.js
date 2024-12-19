@@ -1,18 +1,20 @@
-require('dotenv').config({ path: './backend/.env' });
+require('dotenv').config();
 const jwt = require("jsonwebtoken");
 const Users = require('../models/usersModel');
 
 exports.verifyAdmin = async (req, res, next) => {
   try {
         // Middleware 1: Verificar y decodificar el token JWT
-        const token = req.body.token || req.query.token || req.headers['authorization'];
+        const token = req.body.token || req.query.token || req.headers.authorization?.split(' ')[1];
 
         if (!token) {
           return res.status(401).json({ message: "Unauthorized: No token provided" });
         }
+        console.log('Token recibido:', token);
 
           const decoded = jwt.verify(token, process.env.JWT_SECRET);
-          
+          console.log("Token decodificado:", decoded);
+
           const user = await Users.findById(decoded.sub);
           if (!user) {
             return res.status(404).json({ message: "User not found" });

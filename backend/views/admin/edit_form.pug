@@ -1,0 +1,14 @@
+doctype html
+html(lang="es")
+  head
+    title Edit form
+  body
+    form(action=`/admin/products/${product._id}?_method=PATCH`, method='POST')
+        label(for='product_name') Nombre del Producto:
+        input(type='text', name='product_name', id='product_name', value=product.product_name,required)
+        
+        label(for='product_price') Precio:
+        input(type='number', name='product_price', id='product_price',  value=product.product_price,required)
+        
+        input(type="hidden", name="token", value=token)
+        button(type='submit') Guardar cambios

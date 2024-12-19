@@ -5,16 +5,8 @@ html(lang="es")
   body
     h1 Productos Disponibles
 
-    //- Formulario para crear un nuevo producto
-    form(action='/admin/products', method='POST')
-      label(for='product_name') Nombre del Producto:
-      input(type='text', name='product_name', id='product_name', required)
-      
-      label(for='product_price') Precio:
-      input(type='number', name='product_price', id='product_price', required)
-      
-      input(type="hidden", name="token", value=token)
-      button(type='submit') Crear Producto
+    a(href=`/admin/products/create_form?token=${token}`) Nuevo producto
+
 
     //- Tabla de productos disponibles
     table
@@ -29,22 +21,13 @@ html(lang="es")
             td= product.product_name
             td= "$ " + product.product_price
             td
-              //- Formulario para actualizar el producto
-              form(action=`/admin/products/${product._id}?token=${token}&_method=PATCH`, method='POST')
-                label(for='product_name') Nombre:
-                input(type='text', name='product_name', id='product_name', value=product.product_name, required)
-                
-                label(for='product_price') Precio:
-                input(type='number', name='product_price', id='product_price', value=product.product_price, required)
-                
-                input(type="hidden", name="token", value=token)
-                button(type='submit') Actualizar
-
+              a(href=`/admin/products/${product._id}/edit_form?token=${token}`) Actualizar
+              
               //- Formulario para eliminar el producto
               form(action=`/admin/products/${product._id}?token=${token}&_method=DELETE`, method='POST', style="display:inline")
                 input(type="hidden", name="token", value=token)
                 button(type='submit') Eliminar
-
+    a(href=`/admin/dashboard?token=${token}`)  Volver al Panel
 
 
 

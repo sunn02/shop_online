@@ -14,6 +14,8 @@ func main() {
     r.GET("/", controllers.ShowProducts)
     r.GET("/order/create", controllers.ShowOrderForm)  // Mostrar el formulario
     r.POST("/order/create", controllers.CreateOrder)  // Crear el pedido
+    r.GET("/order/:id/confirmation", controllers.ShowOrder) // id del pedido para mostrar
+    r.DELETE("/order/confirmation/")
 
     err := r.Run(":8080")
     if err != nil {

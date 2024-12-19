@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 const Users = require('../models/usersModel');
 
 const saltRounds = 10; 
-const username = 'Paula';  
-const password = 'admin123';  
+const username = 'admin';  
+const password = 'admin';  
 const role = 'admin';  
 
 mongoose.connect('mongodb://localhost:27017/shop_db', {

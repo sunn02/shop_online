@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './backend/.env' });
+require('dotenv').config();
 const jwt = require("jsonwebtoken");
 const DOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');

@@ -15,7 +15,6 @@ import (
 
 // Mostrar el formulario de pedido para un producto específico
 func ShowOrderForm(c *gin.Context) {
-	log.Println("Iniciando CreateOrder")
 
 	// Obtener el nombre del producto desde la URL
 	productName := c.DefaultQuery("product_name", "")
@@ -30,7 +29,6 @@ func ShowOrderForm(c *gin.Context) {
 	var product models.Product
 	err := collection.FindOne(context.Background(), bson.M{"product_name": productName}).Decode(&product)
 	if err != nil {
-		// Manejar el error si no se encuentra el producto
 		if err == mongo.ErrNoDocuments {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Producto no encontrado zzzz"})
 		} else {
@@ -47,7 +45,6 @@ func ShowOrderForm(c *gin.Context) {
 
 // Crear un nuevo pedido
 func CreateOrder(c *gin.Context) {
-	log.Println("Iniciando CreateOrder")
 	// Obtener los datos del formulario
 	productName := c.DefaultPostForm("product_name", "") // Recuperar el nombre del producto desde el formulario
 	username := c.DefaultPostForm("username", "")
@@ -100,6 +97,8 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	// Confirmar el éxito
-	c.JSON(http.StatusOK, gin.H{"message": "Pedido registrado correctamente", "total": total})
+	c.JSON(http.StatusOK, gin.H{"message": "Pedido registrado correctamente", "total": total}) // ---> REDIRIGIR A LA RUTA DE CONFRIMACION
 }
+
+
 
