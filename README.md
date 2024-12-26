@@ -6,7 +6,7 @@ Este proyecto contiene dos componentes principales:
 1. **Backend (Panel de Administración)**: Maneja la lógica del servidor, rutas de la aplicación y CRUD de productos.  
 2. **Frontend (Tienda Online)**: Muestra la interfaz de usuario para que los pingüinos puedan ver productos y realizar pedidos.
 
----
+
 
 ## Descripción del Proyecto
 
@@ -19,7 +19,7 @@ Este proyecto contiene dos componentes principales:
 - **Mostrar productos**: Los pingüinos pueden ver todos los productos disponibles en `http://localhost:8080/`.  
 - **Crear pedidos**: Los pingüinos pueden realizar pedidos enviando su dirección y seleccionando productos.  
 
----
+
 
 ## Requisitos Previos
 
@@ -28,7 +28,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado lo siguiente:
 - **Go** (para el frontend) → [Descargar Go](https://golang.org/dl/)  
 - **Git** (para clonar el repositorio) → [Descargar Git](https://git-scm.com/)  
 
----
+
 
 ## Clonar el Repositorio
 
@@ -39,7 +39,7 @@ git clone https://github.com/sunn02/shop_online
 cd shop_online
 ```
 
----
+
 
 ## Backend: Configuración y Ejecución (Panel de Administración)
 
@@ -69,7 +69,7 @@ El backend proporciona las rutas necesarias para manejar el login, CRUD de produ
 
 - Las rutas para el CRUD y gestión de pedidos estarán disponibles a partir de este servidor.  
 
----
+
 
 ## Frontend: Configuración y Ejecución (Tienda Online)
 
@@ -97,7 +97,7 @@ El frontend está desarrollado con **Go, HTML y CSS** y se comunica con el servi
 - Para acceder a la **Tienda Online** y ver los productos disponibles, ingresa a:  
   [http://localhost:8080/](http://localhost:8080/)
 
----
+
 
 ## Verificar Funcionamiento
 
@@ -111,6 +111,5 @@ El frontend está desarrollado con **Go, HTML y CSS** y se comunica con el servi
    - Paula puede acceder al panel de administración usando su token JWT para gestionar los productos.
 
 
----
 
 ¡Listo! Ahora puedes configurar y ejecutar ambos servidores. 🚀
